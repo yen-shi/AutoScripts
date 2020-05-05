@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         New Userscript
+// @name         TravianBot
 // @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  try to take over the world!
-// @author       You
+// @version      0.2
+// @description  A script for auto-constructing farms and buildings
+// @author       Yen-Shi Wang
 // @match        https://ts3.travian.com/dorf1.php*
 // @include      https://ts3.travian.com/dorf2.php*
 // @include      https://ts3.travian.com/build.php*
@@ -75,10 +75,11 @@ let clickBuilding = (name) => {
   building.getElementsByClassName('hoverShape')[0].children[0].onclick();
 };
 
-let buildingExists = (name) => {
-  let result = document.getElementsByClassName(name).length > 0;
-  return result;
-}
+let buildingExists =
+    (name) => {
+      let result = document.getElementsByClassName(name).length > 0;
+      return result;
+    }
 
 /*
  * methods for farm
@@ -88,7 +89,8 @@ let getFarm = (name) => {
 };
 
 let getFarmLevel = (name, trueName) => {
-  let level = parseInt(document.getElementsByClassName(name)[0].children[0].innerText);
+  let level =
+      parseInt(document.getElementsByClassName(name)[0].children[0].innerText);
   if (isNaN(level)) {
     level = 0;
   }
@@ -97,7 +99,8 @@ let getFarmLevel = (name, trueName) => {
 };
 
 let farmIsUnderConstruction = (name) => {
-  return document.getElementsByClassName(name)[0].className.match(/\bunderConstruction\b/);
+  return document.getElementsByClassName(name)[0].className.match(
+      /\bunderConstruction\b/);
 };
 
 let clickFarm = (name) => {
@@ -106,7 +109,8 @@ let clickFarm = (name) => {
 };
 
 let getResourceList = () => {
-  let warehouseCap = document.getElementsByClassName('warehouse')[0].children[0];
+  let warehouseCap =
+      document.getElementsByClassName('warehouse')[0].children[0];
   let lumber = document.getElementsByClassName('warehouse')[0].children[1];
   let clay = document.getElementsByClassName('warehouse')[0].children[2];
   let iron = document.getElementsByClassName('warehouse')[0].children[3];
@@ -133,7 +137,8 @@ let handleDorf1 = () => {
   }
 
   setInterval(() => {
-    let farmList = document.getElementsByClassName('boxes-contents cf')[0].children[2];
+    let farmList =
+        document.getElementsByClassName('boxes-contents cf')[0].children[2];
     if (farmList === undefined || farmList.childElementCount < 2) {
       for (let i = 0; i < farmInfo.length; i++) {
         let name = farmInfo[i][2];
@@ -147,7 +152,8 @@ let handleDorf1 = () => {
       }
     }
     setTimeout(() => {
-      let farmList = document.getElementsByClassName('boxes-contents cf')[0].children[2];
+      let farmList =
+          document.getElementsByClassName('boxes-contents cf')[0].children[2];
       if (farmList === undefined) {
         document.getElementsByClassName('buildingView')[0].click();
       } else {
@@ -203,12 +209,12 @@ let handleBuild = () => {
 };
 
 (function() {
-  let url = window.location.href;
-  if (url.match(/https:\/\/ts3.travian.com\/dorf1.php.*/)) {
-    handleDorf1();
-  } else if (url.match(/https:\/\/ts3.travian.com\/dorf2.php.*/)) {
-    handleDorf2();
-  } else if (url.match(/https:\/\/ts3.travian.com\/build.php.*/)) {
-    handleBuild();
-  }
+let url = window.location.href;
+if (url.match(/https:\/\/ts3.travian.com\/dorf1.php.*/)) {
+  handleDorf1();
+} else if (url.match(/https:\/\/ts3.travian.com\/dorf2.php.*/)) {
+  handleDorf2();
+} else if (url.match(/https:\/\/ts3.travian.com\/build.php.*/)) {
+  handleBuild();
+}
 })();
