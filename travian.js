@@ -59,9 +59,9 @@ let buildingInfo = [
 
   // Military
   ['Rally Point', 1, 'buildingSlot g16', 2, 'tabItem military'],
-  ['Palisade', 0, 'buildingSlot g33', 2, 'tabItem military'],
+  ['Palisade', 1, 'buildingSlot g33', 2, 'tabItem military'],
   ['Trapper', 0, 'buildingSlot g36', 2, 'tabItem military'],
-  ['Barracks', 0, 'buildingSlot g19', 2, 'tabItem military'],
+  ['Barracks', 1, 'buildingSlot g19', 2, 'tabItem military'],
   ['Hero\'s Mansion', 0, 'buildingSlot g37', 2, 'tabItem military'],
   ['Academy', 0, 'buildingSlot g22', 2, 'tabItem military'],
   ['Smithy', 0, 'buildingSlot g13', 2, 'tabItem military'],
@@ -88,7 +88,7 @@ let getBuilding = (name) => {
 
 let getBuildingLevel = (name, trueName) => {
   let level = parseInt(getBuilding(name).children[0].children[0].innerText);
-  console.log('Level of building', trueName, 'is', level);
+  // console.log('Level of building', trueName, 'is', level);
   return level;
 };
 
@@ -120,7 +120,7 @@ let getFarmLevel = (name, trueName) => {
   if (isNaN(level)) {
     level = 0;
   }
-  console.log('Level of building', trueName, 'is', level);
+  // console.log('Level of building', trueName, 'is', level);
   return level;
 };
 
@@ -211,16 +211,16 @@ let handleDorf2 = () => {
           }
         } else if (buildingInfo[i][1] > 0) {
           let cate = buildingInfo[i][3];
-          for (let i = 19; i <= 40; ++i) {
-            let emptySlot = `buildingSlot g0 a${i}`;
+          for (let j = 19; j <= 40; j++) {
+            let emptySlot = `buildingSlot g0 a${j}`;
 
             if (buildingExists(emptySlot)) {
               setTimeout(
                 () => {
-                  navigate(`https://ts3.travian.com/build.php?id=${
-                    i}&category=${cate}`)
+                  navigate(`https://ts4.travian.com/build.php?id=${j}&category=${cate}`)
                 },
-                1239 * (i - 18));
+                2589 * i);
+              break;
             }
           }
         }
