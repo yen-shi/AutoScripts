@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TravianBot
 // @namespace    http://tampermonkey.net/
-// @version      0.2.1
+// @version      0.3
 // @description  A script for auto-constructing farms and buildings
 // @author       Yen-Shi Wang
 // @match        https://ts3.travian.com/dorf1.php*
@@ -80,10 +80,10 @@ let clickBuilding = (name) => {
 };
 
 let buildingExists =
-    (name) => {
-      let result = document.getElementsByClassName(name).length > 0;
-      return result;
-    }
+  (name) => {
+    let result = document.getElementsByClassName(name).length > 0;
+    return result;
+  }
 
 /*
  * methods for farm
@@ -94,7 +94,7 @@ let getFarm = (name) => {
 
 let getFarmLevel = (name, trueName) => {
   let level =
-      parseInt(document.getElementsByClassName(name)[0].children[0].innerText);
+    parseInt(document.getElementsByClassName(name)[0].children[0].innerText);
   if (isNaN(level)) {
     level = 0;
   }
@@ -104,7 +104,7 @@ let getFarmLevel = (name, trueName) => {
 
 let farmIsUnderConstruction = (name) => {
   return document.getElementsByClassName(name)[0].className.match(
-      /\bunderConstruction\b/);
+    /\bunderConstruction\b/);
 };
 
 let clickFarm = (name) => {
@@ -114,7 +114,7 @@ let clickFarm = (name) => {
 
 let getResourceList = () => {
   let warehouseCap =
-      document.getElementsByClassName('warehouse')[0].children[0];
+    document.getElementsByClassName('warehouse')[0].children[0];
   let lumber = document.getElementsByClassName('warehouse')[0].children[1];
   let clay = document.getElementsByClassName('warehouse')[0].children[2];
   let iron = document.getElementsByClassName('warehouse')[0].children[3];
@@ -142,7 +142,7 @@ let handleDorf1 = () => {
 
   setInterval(() => {
     let farmList =
-        document.getElementsByClassName('boxes-contents cf')[0].children[2];
+      document.getElementsByClassName('boxes-contents cf')[0].children[2];
     if (farmList === undefined || farmList.childElementCount < 2) {
       for (let i = 0; i < farmInfo.length; i++) {
         let name = farmInfo[i][2];
@@ -151,13 +151,13 @@ let handleDorf1 = () => {
           continue;
         }
         if (getFarmLevel(name, farmInfo[i][0]) < farmInfo[i][1]) {
-          setTimeout(() => {clickFarm(name)}, 1231 * i);
+          setTimeout(() => { clickFarm(name) }, 1231 * i);
         }
       }
     }
     setTimeout(() => {
       let farmList =
-          document.getElementsByClassName('boxes-contents cf')[0].children[2];
+        document.getElementsByClassName('boxes-contents cf')[0].children[2];
       if (farmList === undefined) {
         document.getElementsByClassName('buildingView')[0].click();
       } else {
@@ -181,12 +181,11 @@ let handleDorf2 = () => {
       for (let i = 0; i < buildingInfo.length; i++) {
         let name = buildingInfo[i][2];
         if (buildingExists(name)) {
-          continue;
           if (isUnderConstruction(name)) {
             continue;
           }
           if (getBuildingLevel(name, buildingInfo[i][0]) < buildingInfo[i][1]) {
-            setTimeout(() => {clickBuilding(name)}, 2589 * i);
+            setTimeout(() => { clickBuilding(name) }, 2589 * i);
           }
         } else if (buildingInfo[i][1] > 0) {
           let cate = buildingInfo[i][3];
@@ -195,9 +194,11 @@ let handleDorf2 = () => {
 
             if (buildingExists(emptySlot)) {
               setTimeout(
-                  () => {navigate(`https://ts3.travian.com/build.php?id=${
-                      i}&category=${cate}`)},
-                  2589 * i);
+                () => {
+                  navigate(`https://ts3.travian.com/build.php?id=${
+                    i}&category=${cate}`)
+                },
+                1239 * (i - 18));
             }
           }
         }
@@ -219,18 +220,36 @@ let clickType = (type) => {
 
 let getBuildingList = () => {
   let results = [];
-  allElements = document.getElementById('build').children;
-  allElements.forEach(element => {
-    if (element.classList.contains('buildingWrapper')) {
-      results.push(element);
+  let allElements = document.getElementById('build').children;
+  for (let i = 0; i < allElements.length; i++) {
+    if (allElements[i].classList.contains('buildingWrapper')) {
+      results.push(allElements[i]);
     }
-  });
+  }
   return results;
 };
 
+if (typeof (String.prototype.trim) === 'undefined') {
+  String.prototype.trim = function () {
+    return String(this).replace(/^\s+|\s+$/g, '');
+  };
+}
+
+let getBuildingName = (wrapper) => {
+  return wrapper.children[0].innerText.trim();
+};
+
+let constructBuilding =
+  (wrapper) => {
+    let button = wrapper.getElementsByTagName('button')[0];
+    if (button.value == 'Construct building') {
+      button.click();
+    }
+  }
+
 let handleBuild = () => {
   setInterval(() => {
-    if (document.getElementsByClassName('section1')) {
+    if (document.getElementsByClassName('section1').length > 0) {
       // the building exists
       let button = document.getElementsByClassName('section1')[0].children[0];
       if (button.value.match(/Upgrade to level \d+/)) {
@@ -242,21 +261,27 @@ let handleBuild = () => {
         let type = buildingInfo[i][4];
         if (isActive(type)) {
           let name = buildingInfo[i][0];
+          let targetLevel = buildingInfo[i][1];
           let buildingList = getBuildingList();
-          console.log(buildingList);
+          for (let i = 0; i < buildingList.length; i++) {
+            let buildingName = getBuildingName(buildingList[i]);
+            if (name == buildingName && targetLevel > 0) {
+              setTimeout(() => constructBuilding(buildingList[i]), 1248 * i);
+            }
+          }
         }
       }
     }
   }, checkTime);
 };
 
-(function() {
-let url = window.location.href;
-if (url.match(/https:\/\/ts3.travian.com\/dorf1.php.*/)) {
-  handleDorf1();
-} else if (url.match(/https:\/\/ts3.travian.com\/dorf2.php.*/)) {
-  handleDorf2();
-} else if (url.match(/https:\/\/ts3.travian.com\/build.php.*/)) {
-  handleBuild();
-}
+(function () {
+  let url = window.location.href;
+  if (url.match(/https:\/\/ts3.travian.com\/dorf1.php.*/)) {
+    handleDorf1();
+  } else if (url.match(/https:\/\/ts3.travian.com\/dorf2.php.*/)) {
+    handleDorf2();
+  } else if (url.match(/https:\/\/ts3.travian.com\/build.php.*/)) {
+    handleBuild();
+  }
 })();
