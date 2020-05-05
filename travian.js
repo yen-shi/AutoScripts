@@ -99,8 +99,17 @@ let getBuildingLevel = (name, trueName) => {
   return level;
 };
 
+let getLevelFromBuilding = (buliding) => {
+  let level = parseInt(buliding.children[0].children[0].innerText);
+  return level;
+};
+
 let isUnderConstruction = (name) => {
   return getBuilding(name).children[0].className.match(/\bunderConstruction\b/);
+};
+
+let buildingIsUnderConstruction = (buliding) => {
+  return buliding.children[0].className.match(/\bunderConstruction\b/);
 };
 
 let clickBuilding = (name) => {
@@ -200,6 +209,21 @@ let navigate = (url) => {
   window.location.href = url;
 };
 
+let clickEmptySlot = (cate, wait) => {
+  for (let j = 19; j <= 40; j++) {
+    let emptySlot = `buildingSlot g0 a${j}`;
+
+    if (buildingExists(emptySlot)) {
+      setTimeout(
+        () => {
+          navigate(`https://${server}.travian.com/build.php?id=${j}&category=${cate}`)
+        },
+        wait);
+      break;
+    }
+  }
+};
+
 let handleDorf2 = () => {
   setInterval(() => {
     let buildingList = document.getElementsByClassName('boxes-contents cf')[0];
@@ -210,7 +234,23 @@ let handleDorf2 = () => {
       for (let i = 0; i < buildingInfo.length; i++) {
         let name = buildingInfo[i][2];
         let trueName = buildingInfo[i][0];
-        if (buildingExists(name) && (! trueName.match(/[1-9]. Cranny/))) {
+        if (trueName.match(/[2-9]. Cranny/)) {
+          let crannies = Array.from(document.getElementsByClassName('buildingSlot g23'));
+          let numCranny = crannies.length;
+          let targetNum = parseInt(trueName[0]);
+          if (targetNum > numCranny && buildingInfo[i][1] > 0) {
+            let cate = buildingInfo[i][3];
+            clickEmptySlot(cate, 2589 * i);
+          } else if (targetNum <= numCranny && buildingInfo[i][1] > 0) {
+            crannies.sort((lhs, rhs) => {
+              return getLevelFromBuilding(lhs) > getLevelFromBuilding(rhs);
+            });
+            if (buildingInfo[i][1] > getLevelFromBuilding(crannies[targetNum - 1]) &&
+              !buildingIsUnderConstruction(crannies[targetNum - 1])) {
+              crannies[targetNum - 1].getElementsByClassName('hoverShape')[0].children[0].onclick();
+            }
+          }
+        } else if (buildingExists(name)) {
           if (isUnderConstruction(name)) {
             continue;
           }
@@ -219,18 +259,7 @@ let handleDorf2 = () => {
           }
         } else if (buildingInfo[i][1] > 0) {
           let cate = buildingInfo[i][3];
-          for (let j = 19; j <= 40; j++) {
-            let emptySlot = `buildingSlot g0 a${j}`;
-
-            if (buildingExists(emptySlot)) {
-              setTimeout(
-                () => {
-                  navigate(`https://${server}.travian.com/build.php?id=${j}&category=${cate}`)
-                },
-                2589 * i);
-              break;
-            }
-          }
+          clickEmptySlot(cate, 2589 * i);
         }
       }
     }
