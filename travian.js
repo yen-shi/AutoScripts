@@ -250,6 +250,9 @@ let constructBuilding =
 let handleBuild = () => {
   setInterval(() => {
     if (document.getElementsByClassName('section1').length > 0) {
+      let title = document.getElementsByClassName('titleInHeader')[0].innerText;
+      console.log('Get title', title);
+
       // the building exists
       let button = document.getElementsByClassName('section1')[0].children[0];
       if (button.value.match(/Upgrade to level \d+/)) {
