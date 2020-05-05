@@ -13,27 +13,27 @@
 let server = 'ts3';
 
 let farmInfo = [
-  ['crop1', 2, 'buildingSlot2'],
+  ['crop1', 3, 'buildingSlot2'],
   ['crop2', 2, 'buildingSlot8'],
-  ['crop3', 1, 'buildingSlot9'],
-  ['crop4', 1, 'buildingSlot12'],
-  ['crop5', 1, 'buildingSlot13'],
-  ['crop6', 1, 'buildingSlot15'],
+  ['crop3', 2, 'buildingSlot9'],
+  ['crop4', 2, 'buildingSlot12'],
+  ['crop5', 2, 'buildingSlot13'],
+  ['crop6', 2, 'buildingSlot15'],
 
-  ['clay1', 1, 'buildingSlot5'],
-  ['clay2', 1, 'buildingSlot6'],
-  ['clay3', 1, 'buildingSlot16'],
-  ['clay4', 1, 'buildingSlot18'],
+  ['clay1', 3, 'buildingSlot5'],
+  ['clay2', 3, 'buildingSlot6'],
+  ['clay3', 3, 'buildingSlot16'],
+  ['clay4', 2, 'buildingSlot18'],
 
-  ['wood1', 1, 'buildingSlot1'],
-  ['wood2', 1, 'buildingSlot3'],
-  ['wood3', 1, 'buildingSlot14'],
-  ['wood4', 1, 'buildingSlot17'],
+  ['wood1', 3, 'buildingSlot1'],
+  ['wood2', 3, 'buildingSlot3'],
+  ['wood3', 2, 'buildingSlot14'],
+  ['wood4', 2, 'buildingSlot17'],
 
-  ['iron1', 1, 'buildingSlot4'],
-  ['iron2', 1, 'buildingSlot7'],
-  ['iron3', 1, 'buildingSlot10'],
-  ['iron4', 1, 'buildingSlot11'],
+  ['iron1', 2, 'buildingSlot4'],
+  ['iron2', 2, 'buildingSlot7'],
+  ['iron3', 2, 'buildingSlot10'],
+  ['iron4', 2, 'buildingSlot11'],
 ];
 
 // base classes: 'buildingSlot a19' ~ 'buildingSlot a40'
@@ -45,15 +45,15 @@ let farmInfo = [
 let buildingInfo = [
   // Infrastructure
   ['Main Building', 3, 'buildingSlot g15', 1, 'tabItem infrastructure'],
-  ['Granary', 1, 'buildingSlot g11', 1, 'tabItem infrastructure'],
-  ['Warehouse', 1, 'buildingSlot g10', 1, 'tabItem infrastructure'],
+  ['Granary', 4, 'buildingSlot g11', 1, 'tabItem infrastructure'],
+  ['Warehouse', 4, 'buildingSlot g10', 1, 'tabItem infrastructure'],
   ['Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['2. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['3. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['4. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['5. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
 
-  ['Marketplace', 1, 'buildingSlot g17', 1, 'tabItem infrastructure'],
+  ['Marketplace', 3, 'buildingSlot g17', 1, 'tabItem infrastructure'],
   ['Embassy', 1, 'buildingSlot g18', 1, 'tabItem infrastructure'],
   ['Residence', 0, 'buildingSlot g25', 1, 'tabItem infrastructure'],
   ['Palace', 0, 'buildingSlot g26', 1, 'tabItem infrastructure'],
@@ -193,16 +193,16 @@ let handleDorf1 = () => {
         }
       }
     }
-    setTimeout(() => {
-      let farmList =
-        document.getElementsByClassName('boxes-contents cf')[0].children[2];
-      if (farmList === undefined) {
-        document.getElementsByClassName('buildingView')[0].click();
-      } else {
-        console.log('The building list is not empty.');
-      }
-    }, 25000);
   }, checkTime);
+  setInterval(() => {
+    let farmList =
+      document.getElementsByClassName('boxes-contents cf')[0].children[2];
+    if (farmList === undefined) {
+      document.getElementsByClassName('buildingView')[0].click();
+    } else {
+      console.log('The building list is not empty.');
+    }
+  }, 30000);
 };
 
 let navigate = (url) => {
@@ -264,6 +264,15 @@ let handleDorf2 = () => {
       }
     }
   }, checkTime);
+  setInterval(() => {
+    let farmList =
+      document.getElementsByClassName('boxes-contents cf')[0].children[2];
+    if (farmList === undefined) {
+      document.getElementsByClassName('resourceView')[0].click();
+    } else {
+      console.log('The building list is not empty.');
+    }
+  }, 30000);
 };
 
 let isActive = (type) => {
