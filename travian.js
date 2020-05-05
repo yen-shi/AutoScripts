@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TravianBot
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.2.1
 // @description  A script for auto-constructing farms and buildings
 // @author       Yen-Shi Wang
 // @match        https://ts3.travian.com/dorf1.php*
@@ -36,19 +36,23 @@ let farmInfo = [
 
 // base classes: 'buildingSlot a19' ~ 'buildingSlot a40'
 //               'buildingSlot <id>'
-let buildingInfo = [
-  ['Main Building', 3, 'buildingSlot g15', 'tabItem infrastructure'],
 
-  ['Granary', 1, 'buildingSlot g11', 'tabItem infrastructure'],
-  ['Warehouse', 1, 'buildingSlot g10', 'tabItem infrastructure'],
-  ['Cranny', 1, 'buildingSlot g23', 'tabItem infrastructure'],
-  ['Marketplace', 1, 'buildingSlot g17', 'tabItem infrastructure'],
-  ['Embassy', 1, 'buildingSlot g18', 'tabItem infrastructure'],
-  ['Rally Point', 1, 'buildingSlot g16', 'tabItem infrastructure'],
+// 'tabItem infrastructure'
+// 'tabItem resources'
+// 'tabItem military'
+let buildingInfo = [
+  ['Main Building', 3, 'buildingSlot g15', 1, 'tabItem infrastructure'],
+
+  ['Granary', 1, 'buildingSlot g11', 1, 'tabItem infrastructure'],
+  ['Warehouse', 1, 'buildingSlot g10', 1, 'tabItem infrastructure'],
+  ['Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
+  ['Marketplace', 1, 'buildingSlot g17', 1, 'tabItem infrastructure'],
+  ['Embassy', 1, 'buildingSlot g18', 1, 'tabItem infrastructure'],
 
   // wall of Gaul
-  ['Palisade', 0, 'buildingSlot g33', 'tabItem military'],
-  ['Trapper', 0, 'buildingSlot g36', 'tabItem military']
+  ['Palisade', 0, 'buildingSlot g33', 2, 'tabItem military'],
+  ['Trapper', 0, 'buildingSlot g36', 2, 'tabItem military'],
+  ['Rally Point', 1, 'buildingSlot g16', 1, 'tabItem military'],
 ];
 
 let checkTime = 3320;
@@ -163,6 +167,10 @@ let handleDorf1 = () => {
   }, checkTime);
 };
 
+let navigate = (url) => {
+  window.location.href = url;
+};
+
 let handleDorf2 = () => {
   setInterval(() => {
     let buildingList = document.getElementsByClassName('boxes-contents cf')[0];
@@ -181,16 +189,43 @@ let handleDorf2 = () => {
             setTimeout(() => {clickBuilding(name)}, 2589 * i);
           }
         } else if (buildingInfo[i][1] > 0) {
+          let cate = buildingInfo[i][3];
           for (let i = 19; i <= 40; ++i) {
             let emptySlot = `buildingSlot g0 a${i}`;
+
             if (buildingExists(emptySlot)) {
-              setTimeout(() => {clickBuilding(emptySlot)}, 2589 * i);
+              setTimeout(
+                  () => {navigate(`https://ts3.travian.com/build.php?id=${
+                      i}&category=${cate}`)},
+                  2589 * i);
             }
           }
         }
       }
     }
   }, checkTime);
+};
+
+let isActive = (type) => {
+  if (document.getElementsByClassName(type + ' active')) {
+    return true;
+  }
+  return false;
+};
+
+let clickType = (type) => {
+  document.getElementsByClassName(type)[0].click();
+};
+
+let getBuildingList = () => {
+  let results = [];
+  allElements = document.getElementById('build').children;
+  allElements.forEach(element => {
+    if (element.classList.contains('buildingWrapper')) {
+      results.push(element);
+    }
+  });
+  return results;
 };
 
 let handleBuild = () => {
@@ -203,7 +238,14 @@ let handleBuild = () => {
       }
     } else {
       // go through the building info list
-      // buildingInfo
+      for (let i = 0; i < buildingInfo.length; i++) {
+        let type = buildingInfo[i][4];
+        if (isActive(type)) {
+          let name = buildingInfo[i][0];
+          let buildingList = getBuildingList();
+          console.log(buildingList);
+        }
+      }
     }
   }, checkTime);
 };
