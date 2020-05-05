@@ -41,18 +41,40 @@ let farmInfo = [
 // 'tabItem resources'
 // 'tabItem military'
 let buildingInfo = [
+  // Infrastructure
   ['Main Building', 3, 'buildingSlot g15', 1, 'tabItem infrastructure'],
-
   ['Granary', 1, 'buildingSlot g11', 1, 'tabItem infrastructure'],
   ['Warehouse', 1, 'buildingSlot g10', 1, 'tabItem infrastructure'],
   ['Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['Marketplace', 1, 'buildingSlot g17', 1, 'tabItem infrastructure'],
   ['Embassy', 1, 'buildingSlot g18', 1, 'tabItem infrastructure'],
+  ['Residence', 0, 'buildingSlot g25', 1, 'tabItem infrastructure'],
+  ['Palace', 0, 'buildingSlot g26', 1, 'tabItem infrastructure'],
+  ['Stonemason\'s Lodge', 0, 'buildingSlot g34', 1, 'tabItem infrastructure'],
+  ['Treasury', 0, 'buildingSlot g27', 1, 'tabItem infrastructure'],
+  ['Town Hall', 0, 'buildingSlot g24', 1, 'tabItem infrastructure'],
+  ['Trade Office', 0, 'buildingSlot g28', 1, 'tabItem infrastructure'],
+  ['Great Granary', 0, 'buildingSlot g39', 1, 'tabItem infrastructure'],
+  ['Great Warehouse', 0, 'buildingSlot g38', 1, 'tabItem infrastructure'],
 
-  // wall of Gaul
+  // Military
+  ['Rally Point', 1, 'buildingSlot g16', 2, 'tabItem military'],
   ['Palisade', 0, 'buildingSlot g33', 2, 'tabItem military'],
   ['Trapper', 0, 'buildingSlot g36', 2, 'tabItem military'],
-  ['Rally Point', 1, 'buildingSlot g16', 1, 'tabItem military'],
+  ['Barracks', 0, 'buildingSlot g19', 2, 'tabItem military'],
+  ['Hero\'s Mansion', 0, 'buildingSlot g37', 2, 'tabItem military'],
+  ['Academy', 0, 'buildingSlot g22', 2, 'tabItem military'],
+  ['Smithy', 0, 'buildingSlot g13', 2, 'tabItem military'],
+  ['Stable', 0, 'buildingSlot g20', 2, 'tabItem military'],
+  ['Workshop', 0, 'buildingSlot g21', 2, 'tabItem military'],
+  ['Tournament Square', 0, 'buildingSlot g14', 2, 'tabItem military'],
+
+  // Resources
+  ['Grain Mill', 0, 'buildingSlot g8', 3, 'tabItem resources'],
+  ['Sawmill', 0, 'buildingSlot g5', 3, 'tabItem resources'],
+  ['Brickyard', 0, 'buildingSlot g6', 3, 'tabItem resources'],
+  ['Iron Foundry', 0, 'buildingSlot g7', 3, 'tabItem resources'],
+  ['Bakery', 0, 'buildingSlot g9', 3, 'tabItem resources'],
 ];
 
 let checkTime = 3320;
