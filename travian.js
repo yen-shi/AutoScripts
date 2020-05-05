@@ -10,6 +10,8 @@
 // @grant        none
 // ==/UserScript==
 
+let server = 'ts3';
+
 let farmInfo = [
   ['crop1', 2, 'buildingSlot2'],
   ['crop2', 2, 'buildingSlot8'],
@@ -46,6 +48,11 @@ let buildingInfo = [
   ['Granary', 1, 'buildingSlot g11', 1, 'tabItem infrastructure'],
   ['Warehouse', 1, 'buildingSlot g10', 1, 'tabItem infrastructure'],
   ['Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
+  ['2. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
+  ['3. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
+  ['4. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
+  ['5. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
+
   ['Marketplace', 1, 'buildingSlot g17', 1, 'tabItem infrastructure'],
   ['Embassy', 1, 'buildingSlot g18', 1, 'tabItem infrastructure'],
   ['Residence', 0, 'buildingSlot g25', 1, 'tabItem infrastructure'],
@@ -202,7 +209,8 @@ let handleDorf2 = () => {
     if (buildingList === undefined || buildingList.childElementCount < 2) {
       for (let i = 0; i < buildingInfo.length; i++) {
         let name = buildingInfo[i][2];
-        if (buildingExists(name)) {
+        let trueName = buildingInfo[i][0];
+        if (buildingExists(name) && (! trueName.match(/[1-9]. Cranny/))) {
           if (isUnderConstruction(name)) {
             continue;
           }
@@ -217,7 +225,7 @@ let handleDorf2 = () => {
             if (buildingExists(emptySlot)) {
               setTimeout(
                 () => {
-                  navigate(`https://ts4.travian.com/build.php?id=${j}&category=${cate}`)
+                  navigate(`https://${server}.travian.com/build.php?id=${j}&category=${cate}`)
                 },
                 2589 * i);
               break;
@@ -302,11 +310,11 @@ let handleBuild = () => {
 
 (function () {
   let url = window.location.href;
-  if (url.match(/https:\/\/ts3.travian.com\/dorf1.php.*/)) {
+  if (url.match(/https:\/\/ts[0-9].travian.com\/dorf1.php.*/)) {
     handleDorf1();
-  } else if (url.match(/https:\/\/ts3.travian.com\/dorf2.php.*/)) {
+  } else if (url.match(/https:\/\/ts[0-9].travian.com\/dorf2.php.*/)) {
     handleDorf2();
-  } else if (url.match(/https:\/\/ts3.travian.com\/build.php.*/)) {
+  } else if (url.match(/https:\/\/ts[0-9].travian.com\/build.php.*/)) {
     handleBuild();
   }
 })();
