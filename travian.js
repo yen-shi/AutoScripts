@@ -182,7 +182,7 @@ let handleDorf1 = () => {
   setInterval(() => {
     let farmList =
       document.getElementsByClassName('boxes-contents cf')[0].children[2];
-    if (farmList === undefined || farmList.childElementCount < 2) {
+    if (farmList === undefined) {
       for (let i = 0; i < farmInfo.length; i++) {
         let name = farmInfo[i][2];
         if (farmIsUnderConstruction(name)) {
@@ -228,10 +228,7 @@ let clickEmptySlot = (cate, wait) => {
 let handleDorf2 = () => {
   setInterval(() => {
     let buildingList = document.getElementsByClassName('boxes-contents cf')[0];
-    if (buildingList !== undefined) {
-      buildingList = buildingList.children[2];
-    }
-    if (buildingList === undefined || buildingList.childElementCount < 2) {
+    if (buildingList === undefined) {
       for (let i = 0; i < buildingInfo.length; i++) {
         let name = buildingInfo[i][2];
         let trueName = buildingInfo[i][0];
