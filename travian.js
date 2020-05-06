@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         TravianBot
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  A script for auto-constructing farms and buildings
 // @author       Yen-Shi Wang
 // @match        https://ts3.travian.com/dorf1.php*
 // @include      https://ts3.travian.com/dorf2.php*
 // @include      https://ts3.travian.com/build.php*
+// @include      https://ts3.travian.com/login.php*
 // @grant        none
 // ==/UserScript==
 
@@ -44,9 +45,9 @@ let farmInfo = [
 // 'tabItem military'
 let buildingInfo = [
   // Infrastructure
-  ['Main Building', 3, 'buildingSlot g15', 1, 'tabItem infrastructure'],
-  ['Granary', 4, 'buildingSlot g11', 1, 'tabItem infrastructure'],
-  ['Warehouse', 4, 'buildingSlot g10', 1, 'tabItem infrastructure'],
+  ['Main Building', 5, 'buildingSlot g15', 1, 'tabItem infrastructure'],
+  ['Granary', 5, 'buildingSlot g11', 1, 'tabItem infrastructure'],
+  ['Warehouse', 5, 'buildingSlot g10', 1, 'tabItem infrastructure'],
   ['Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['2. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['3. Cranny', 1, 'buildingSlot g23', 1, 'tabItem infrastructure'],
@@ -346,6 +347,11 @@ let handleBuild = () => {
   }, checkTime);
 };
 
+let handleLogin = () => {
+  let button = document.getElementsByClassName('loginButtonRow')[0];
+  button.getElementsByTagName('button')[0].click();
+};
+
 (function () {
   let url = window.location.href;
   if (url.match(/https:\/\/ts[0-9].travian.com\/dorf1.php.*/)) {
@@ -354,5 +360,7 @@ let handleBuild = () => {
     handleDorf2();
   } else if (url.match(/https:\/\/ts[0-9].travian.com\/build.php.*/)) {
     handleBuild();
+  } else if (url.match(/https:\/\/ts[0-9].travian.com\/login.php.*/)) {
+    handleLogin();
   }
 })();
