@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TravianBot
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 // @description  A script for auto-constructing farms and buildings
 // @author       Yen-Shi Wang
 // @match        https://ts3.travian.com/dorf1.php*
@@ -44,12 +44,17 @@ let farmInfo = [
 // 'tabItem resources'
 // 'tabItem military'
 let buildingInfo = [
+  ['Residence', 10, 'buildingSlot g25', 1, 'tabItem infrastructure'],
+  ['Marketplace', 8, 'buildingSlot g17', 1, 'tabItem infrastructure'],
+  ['Smithy', 3, 'buildingSlot g13', 2, 'tabItem military'],
+  ['2. Cranny', 10, 'buildingSlot g23', 1, 'tabItem infrastructure'],
+
   // Infrastructure
   ['Main Building', 5, 'buildingSlot g15', 1, 'tabItem infrastructure'],
-  ['Granary', 6, 'buildingSlot g11', 1, 'tabItem infrastructure'],
+  ['Granary', 7, 'buildingSlot g11', 1, 'tabItem infrastructure'],
   ['Warehouse', 7, 'buildingSlot g10', 1, 'tabItem infrastructure'],
   ['Cranny', 10, 'buildingSlot g23', 1, 'tabItem infrastructure'],
-  ['2. Cranny', 3, 'buildingSlot g23', 1, 'tabItem infrastructure'],
+
   ['3. Cranny', 3, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['4. Cranny', 3, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['5. Cranny', 3, 'buildingSlot g23', 1, 'tabItem infrastructure'],
@@ -57,9 +62,8 @@ let buildingInfo = [
   ['7. Cranny', 3, 'buildingSlot g23', 1, 'tabItem infrastructure'],
   ['8. Cranny', 3, 'buildingSlot g23', 1, 'tabItem infrastructure'],
 
-  ['Marketplace', 5, 'buildingSlot g17', 1, 'tabItem infrastructure'],
+
   ['Embassy', 1, 'buildingSlot g18', 1, 'tabItem infrastructure'],
-  ['Residence', 0, 'buildingSlot g25', 1, 'tabItem infrastructure'],
   ['Palace', 1, 'buildingSlot g26', 1, 'tabItem infrastructure'],
   ['Stonemason\'s Lodge', 0, 'buildingSlot g34', 1, 'tabItem infrastructure'],
   ['Treasury', 0, 'buildingSlot g27', 1, 'tabItem infrastructure'],
@@ -75,7 +79,7 @@ let buildingInfo = [
   ['Barracks', 3, 'buildingSlot g19', 2, 'tabItem military'],
   ['Hero\'s Mansion', 0, 'buildingSlot g37', 2, 'tabItem military'],
   ['Academy', 1, 'buildingSlot g22', 2, 'tabItem military'],
-  ['Smithy', 0, 'buildingSlot g13', 2, 'tabItem military'],
+
   ['Stable', 0, 'buildingSlot g20', 2, 'tabItem military'],
   ['Workshop', 0, 'buildingSlot g21', 2, 'tabItem military'],
   ['Tournament Square', 0, 'buildingSlot g14', 2, 'tabItem military'],
@@ -344,12 +348,14 @@ let handleBuild = () => {
         }
       }
     }
-  }, checkTime);
+  }, checkTime * 3);
 };
 
 let handleLogin = () => {
   let button = document.getElementsByClassName('loginButtonRow')[0];
-  button.getElementsByTagName('button')[0].click();
+  setInterval(() => {
+    button.getElementsByTagName('button')[0].click();
+  }, 10000);
 };
 
 (function () {
